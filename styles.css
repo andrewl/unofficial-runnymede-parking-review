@@ -1,0 +1,135 @@
+:root {
+  color-scheme: light;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #17212b;
+  background: #f3f6f8;
+  line-height: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: #075b8d;
+}
+
+a:hover {
+  color: #003e64;
+}
+
+.site-header {
+  background: #123b55;
+  color: #fff;
+  padding: 1.25rem max(1.25rem, calc((100% - 72rem) / 2));
+}
+
+.site-header a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.site-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+main {
+  width: min(72rem, calc(100% - 2rem));
+  margin: 2rem auto 4rem;
+}
+
+.breadcrumbs {
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+}
+
+.lead {
+  max-width: 62rem;
+  font-size: 1.1rem;
+}
+
+.card-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.card,
+.panel {
+  border: 1px solid #d5dfe5;
+  border-radius: 0.5rem;
+  background: #fff;
+  padding: 1.25rem;
+}
+
+.card h2,
+.card h3 {
+  margin-top: 0;
+}
+
+.proposal-list {
+  padding-left: 1.25rem;
+}
+
+.proposal-list li {
+  margin: 0.65rem 0;
+}
+
+.map-frame {
+  display: block;
+  width: 100%;
+  height: min(76vh, 58rem);
+  min-height: 32rem;
+  margin: 1rem 0 0.75rem;
+  border: 1px solid #aebdc6;
+  background: #eef2f4;
+}
+
+.map-links {
+  margin-bottom: 2rem;
+}
+
+.feedback {
+  border-left: 0.35rem solid #087c59;
+  background: #eaf5f0;
+  padding: 1rem 1.25rem;
+}
+
+.feedback p:first-child {
+  margin-top: 0;
+}
+
+.feedback p:last-child {
+  margin-bottom: 0;
+}
+
+.site-footer {
+  border-top: 1px solid #d5dfe5;
+  color: #40515c;
+  font-size: 0.9rem;
+  padding-top: 1.25rem;
+}
+
+@media (max-width: 40rem) {
+  main {
+    width: min(100% - 1.25rem, 72rem);
+    margin-top: 1.25rem;
+  }
+
+  .map-frame {
+    height: 65vh;
+    min-height: 24rem;
+  }
+}
