@@ -3,6 +3,7 @@
 
 from html import escape
 from pathlib import Path
+import json
 import re
 
 
@@ -529,7 +530,116 @@ FEEDBACK_TEXT = [
 ]
 
 
-def page_shell(title, content, depth=0):
+# Approximate (longitude, latitude) per proposal. Most come from OpenStreetMap
+# street geocoding; entries marked "estimated" could not be found and are guesses.
+COORDS = {
+    "corrie-bois-hall": (-0.48382, 51.37112),
+    "chapel-park-chapel-grove": (-0.49613, 51.37365),
+    "green-lane-rickman-crescent": (-0.49383, 51.37484),
+    "hamm-moor-lane": (-0.47502, 51.37202),
+    "ledger-drive-rudge-rise": (-0.49350, 51.37150),  # estimated
+    "lime-grove-sumner-place": (-0.50122, 51.36955),
+    "sayes-court-farm-drive": (-0.49434, 51.36674),
+    "essex-close": (-0.48782, 51.37064),
+    "school-lane": (-0.50249, 51.37212),
+    "bridge-road": (-0.49086, 51.38957),
+    "fordwater-road": (-0.49468, 51.38622),
+    "paddocks-way": (-0.49612, 51.38651),
+    "station-road": (-0.50425, 51.38531),
+    "windsor-street": (-0.50481, 51.39264),
+    "little-green-lane": (-0.51654, 51.37698),
+    "boscombe-close": (-0.53397, 51.41946),
+    "claremont-road": (-0.52462, 51.43288),
+    "roundway": (-0.54700, 51.42900),  # estimated
+    "vicarage-road-vicarage-avenue": (-0.53689, 51.42877),
+    "central-englefield-green-permit-scheme": (-0.56699, 51.42984),
+    "armstrong-road": (-0.57032, 51.42801),
+    "middle-hill-permit-bays": (-0.56092, 51.42980),
+    "middle-hill-spencer-gardens": (-0.56142, 51.42990),
+    "middle-hill-lodge-close": (-0.56042, 51.42970),
+    "the-retreat": (-0.56288, 51.42943),
+    "st-judes-road-west-tro-amendment": (-0.57312, 51.43049),
+    "st-judes-road-east-tro-amendment": (-0.57292, 51.43039),
+    "victoria-street-tro-amendment": (-0.57039, 51.42909),
+    "wick-road": (-0.58124, 51.42157),
+    "barnway": (-0.57017, 51.43065),
+    "spring-rise": (-0.55690, 51.42871),
+    "denham-road-tro-amendment": (-0.54327, 51.43371),
+    "bousley-rise": (-0.52360, 51.36054),
+    "brox-road": (-0.53530, 51.35515),
+    "crabtree-road": (-0.53170, 51.41506),
+    "stroude-road-luddington-avenue": (-0.55600, 51.40050),  # estimated
+    "woodham-lane-new-haw": (-0.49914, 51.34914),
+    "woodham-lane-hawthorn-way": (-0.49312, 51.35133),
+    "woodham-lane-mayfield-avenue": (-0.49323, 51.35016),
+    "woodham-lane-woodham": (-0.50313, 51.34741),
+}
+
+
+MAP_HEAD = """  <link rel="stylesheet" href="assets/vendor/maplibre-gl.css">
+  <script src="assets/vendor/maplibre-gl.js"></script>"""
+
+MAP_SCRIPT = """  <script>
+    const proposals = __DATA__;
+    const map = new maplibregl.Map({
+      container: "proposal-map",
+      center: [-0.52, 51.39],
+      zoom: 10.5,
+      style: {
+        version: 8,
+        sources: {
+          osm: {
+            type: "raster",
+            tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+            tileSize: 256,
+            maxzoom: 19,
+            attribution: "&copy; <a href=\\"https://www.openstreetmap.org/copyright\\">OpenStreetMap</a> contributors"
+          }
+        },
+        layers: [{ id: "osm", type: "raster", source: "osm" }]
+      }
+    });
+    map.addControl(new maplibregl.NavigationControl());
+
+    const bounds = new maplibregl.LngLatBounds();
+    for (const feature of proposals.features) {
+      const { title, url, drawings } = feature.properties;
+      const popup = new maplibregl.Popup({ offset: 25 });
+      const content = document.createElement("div");
+      const link = document.createElement("a");
+      link.href = url;
+      link.textContent = title;
+      const note = document.createElement("div");
+      note.textContent = "Drawing " + drawings;
+      content.append(link, note);
+      popup.setDOMContent(content);
+      new maplibregl.Marker({ color: "#075b8d" })
+        .setLngLat(feature.geometry.coordinates)
+        .setPopup(popup)
+        .addTo(map);
+      bounds.extend(feature.geometry.coordinates);
+    }
+    map.fitBounds(bounds, { padding: 40, duration: 0 });
+  </script>"""
+
+
+def proposals_geojson():
+    features = [
+        {
+            "type": "Feature",
+            "geometry": {"type": "Point", "coordinates": list(COORDS[p["id"]])},
+            "properties": {
+                "title": p["title"],
+                "url": f"proposals/{p['id']}.html",
+                "drawings": ", ".join(p["drawings"]),
+            },
+        }
+        for p in PROPOSALS
+    ]
+    return json.dumps({"type": "FeatureCollection", "features": features})
+
+
+def page_shell(title, content, depth=0, head_extra="", body_extra=""):
     prefix = "../" * depth
     return f"""<!doctype html>
 <html lang="en">
@@ -538,6 +648,7 @@ def page_shell(title, content, depth=0):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{escape(title)} | Runnymede Parking Review 2026</title>
   <link rel="stylesheet" href="{prefix}styles.css">
+{head_extra}
 </head>
 <body>
   <header class="site-header">
@@ -546,6 +657,7 @@ def page_shell(title, content, depth=0):
   <main>
 {content}
   </main>
+{body_extra}
 </body>
 </html>
 """
@@ -600,6 +712,11 @@ def build():
     index_content = f"""    <h1>Runnymede Parking Review 2026</h1>
     <p class="lead">Explore the proposed parking changes by area. Each proposal page includes its details, the associated drawing and a link to the online feedback form.</p>
     <p>The proposals are part of Surrey County Council's Runnymede parking review. The information below is based on the published <a href="{STATEMENT_URL}">Statement of Reasons</a> and its associated drawing packs.</p>
+    <section aria-labelledby="map-heading">
+      <h2 id="map-heading">Map of proposals</h2>
+      <p>Markers show the approximate location of each proposal. Select a marker, then follow the link to open the proposal.</p>
+      <div id="proposal-map" class="proposal-map" role="region" aria-label="Map of proposal locations"></div>
+    </section>
     <section aria-labelledby="areas-heading">
       <h2 id="areas-heading">Choose an area</h2>
       <div class="card-list">
@@ -608,7 +725,13 @@ def build():
     </section>
     <p><a href="{FORM_URL}">Go to the online feedback form</a></p>"""
     (ROOT / "index.html").write_text(
-        page_shell("Runnymede Parking Review 2026", index_content), encoding="utf-8"
+        page_shell(
+            "Runnymede Parking Review 2026",
+            index_content,
+            head_extra=MAP_HEAD,
+            body_extra=MAP_SCRIPT.replace("__DATA__", proposals_geojson().replace("</", "<\\/")),
+        ),
+        encoding="utf-8",
     )
 
     for slug, name, subtitle in AREAS:

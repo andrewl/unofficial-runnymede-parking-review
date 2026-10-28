@@ -87,6 +87,15 @@ h3 {
   margin: 0.65rem 0;
 }
 
+.proposal-map {
+  width: 100%;
+  height: min(70vh, 40rem);
+  min-height: 22rem;
+  margin: 1rem 0 2rem;
+  border: 1px solid #aebdc6;
+  border-radius: 0.5rem;
+}
+
 .map-frame {
   display: block;
   width: 100%;
