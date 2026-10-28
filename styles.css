@@ -1,8 +1,8 @@
 :root {
   color-scheme: light;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  color: #17212b;
-  background: #f3f6f8;
+  color: #221b27;
+  background: #f7f4f7;
   line-height: 1.6;
 }
 
@@ -15,15 +15,15 @@ body {
 }
 
 a {
-  color: #075b8d;
+  color: #7b2d5f;
 }
 
 a:hover {
-  color: #003e64;
+  color: #4f1c3d;
 }
 
 .site-header {
-  background: #123b55;
+  background: #3d2c4d;
   color: #fff;
   padding: 1.25rem max(1.25rem, calc((100% - 72rem) / 2));
 }
@@ -68,7 +68,7 @@ h3 {
 
 .card,
 .panel {
-  border: 1px solid #d5dfe5;
+  border: 1px solid #ddd5df;
   border-radius: 0.5rem;
   background: #fff;
   padding: 1.25rem;
@@ -92,7 +92,7 @@ h3 {
   height: min(70vh, 40rem);
   min-height: 22rem;
   margin: 1rem 0 2rem;
-  border: 1px solid #aebdc6;
+  border: 1px solid #c1b6c4;
   border-radius: 0.5rem;
 }
 
@@ -102,8 +102,8 @@ h3 {
   height: min(76vh, 58rem);
   min-height: 32rem;
   margin: 1rem 0 0.75rem;
-  border: 1px solid #aebdc6;
-  background: #eef2f4;
+  border: 1px solid #c1b6c4;
+  background: #f0ecf1;
 }
 
 .map-links {
@@ -124,9 +124,26 @@ h3 {
   margin-bottom: 0;
 }
 
+.disclaimer {
+  margin-top: 2rem;
+  border: 1px solid #c9b458;
+  border-radius: 0.5rem;
+  background: #fff8dc;
+  padding: 1rem 1.25rem;
+}
+
+.disclaimer h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+}
+
+.disclaimer p:last-child {
+  margin-bottom: 0;
+}
+
 .site-footer {
-  border-top: 1px solid #d5dfe5;
-  color: #40515c;
+  border-top: 1px solid #ddd5df;
+  color: #4d4452;
   font-size: 0.9rem;
   padding-top: 1.25rem;
 }
@@ -140,5 +157,34 @@ h3 {
   .map-frame {
     height: 65vh;
     min-height: 24rem;
+  }
+}
+
+.figure-right {
+  float: right;
+  width: min(22rem, 45%);
+  margin: 0 0 1rem 1.5rem;
+}
+
+.figure-right img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #c1b6c4;
+  border-radius: 0.5rem;
+}
+
+.figure-right figcaption {
+  margin-top: 0.4rem;
+  color: #4d4452;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 40rem) {
+  .figure-right {
+    float: none;
+    width: 100%;
+    max-width: 22rem;
+    margin: 0 auto 1rem;
   }
 }

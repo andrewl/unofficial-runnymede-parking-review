@@ -9,6 +9,10 @@ import re
 
 ROOT = Path(__file__).resolve().parent
 FORM_URL = "https://runnymedeparkingreview2026.commonplace.is/"
+OFFICIAL_URL = (
+    "https://www.surreycc.gov.uk/roads-and-transport/parking/reviews/runnymede/"
+    "runnymede-parking-review-2026"
+)
 STATEMENT_URL = (
     "https://www.surreycc.gov.uk/__data/assets/pdf_file/0004/539329/"
     "Runnymede-parking-review-2026.-Statement-of-Reasons.pdf"
@@ -613,7 +617,7 @@ MAP_SCRIPT = """  <script>
       note.textContent = "Drawing " + drawings;
       content.append(link, note);
       popup.setDOMContent(content);
-      new maplibregl.Marker({ color: "#075b8d" })
+      new maplibregl.Marker({ color: "#7b2d5f" })
         .setLngLat(feature.geometry.coordinates)
         .setPopup(popup)
         .addTo(map);
@@ -646,16 +650,24 @@ def page_shell(title, content, depth=0, head_extra="", body_extra=""):
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{escape(title)} | Runnymede Parking Review 2026</title>
+  <title>{escape(title) + " | Runnymede Parking Review 2026 (Unofficial site)" if depth else escape(title)}</title>
   <link rel="stylesheet" href="{prefix}styles.css">
 {head_extra}
 </head>
 <body>
   <header class="site-header">
-    <a class="site-title" href="{prefix}index.html">Runnymede Parking Review 2026</a>
+    <a class="site-title" href="{prefix}index.html">Runnymede Parking Review 2026 (Unofficial site)</a>
   </header>
   <main>
 {content}
+    <aside class="disclaimer" aria-labelledby="disclaimer-heading">
+      <h2 id="disclaimer-heading">About this website</h2>
+      <p>These pages are not in any way affiliated with Surrey County Council or Runnymede Borough Council. They use publicly available information from the Surrey County Council website, which is the authoritative source on this matter.</p>
+      <p><strong>Before submitting any feedback, please check the official Surrey County Council website to confirm the details of the proposals, as the official information takes precedence over anything shown here.</strong></p>
+      <p><a href="{OFFICIAL_URL}">Runnymede parking review 2026 on the Surrey County Council website</a></p>
+      <p><a href="{prefix}why-this-site.html">Why this site exists</a></p>
+      <p>Errors and omissions excepted (E&amp;OE). Every effort has been made to reproduce the published information accurately, but no guarantee is given that it is complete, correct or up to date.</p>
+    </aside>
   </main>
 {body_extra}
 </body>
@@ -709,9 +721,8 @@ def build():
             f'<article class="card"><h2><a href="areas/{slug}.html">{escape(name)}</a></h2>'
             f"<p>{escape(subtitle)} · {count} proposals</p></article>"
         )
-    index_content = f"""    <h1>Runnymede Parking Review 2026</h1>
-    <p class="lead">Explore the proposed parking changes by area. Each proposal page includes its details, the associated drawing and a link to the online feedback form.</p>
-    <p>The proposals are part of Surrey County Council's Runnymede parking review. The information below is based on the published <a href="{STATEMENT_URL}">Statement of Reasons</a> and its associated drawing packs.</p>
+    index_content = f"""    <h1>Runnymede Parking Review 2026 (Unofficial site)</h1>
+    <p class="lead">Surrey County Council is proposing a number of new parking controls and restrictions across Runnymede. This site lets residents explore each proposal and find out how to comment on it. It is not affiliated with Surrey County Council and uses only publicly available information from the <a href="{OFFICIAL_URL}">Surrey County Council website</a>; you can also read <a href="why-this-site.html">why this site exists</a>.</p>
     <section aria-labelledby="map-heading">
       <h2 id="map-heading">Map of proposals</h2>
       <p>Markers show the approximate location of each proposal. Select a marker, then follow the link to open the proposal.</p>
@@ -724,9 +735,31 @@ def build():
       </div>
     </section>
     <p><a href="{FORM_URL}">Go to the online feedback form</a></p>"""
+    why_content = f"""    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="index.html">Home</a> / Why this site exists</nav>
+    <h1>Why this site exists</h1>
+    <figure class="figure-right">
+      <img src="assets/images/notice.png" width="354" height="520" alt="Photograph of a Surrey Highways notice about parking, attached to a lamp post. It gives a website address, library locations where details can be viewed, the 27 November 2026 closing date, a postal address for comments and a QR code.">
+      <figcaption>The notice put up on a lamp post in my street.</figcaption>
+    </figure>
+    <p>This site was built by a local resident after seeing a generic notice about parking changes on a lamp post nearby. The notice explained that changes were proposed "at or close to this location", and pointed to a website, with a QR code, for more information.</p>
+    <p>Finding out what was actually proposed for my street took some digging:</p>
+    <ul>
+      <li>the written proposal was inside one large PDF, the Statement of Reasons, covering the whole borough;</li>
+      <li>the map or drawing for each proposal was in a different PDF, and there were several of these for each area;</li>
+      <li>the link to comment was on a separate website altogether.</li>
+    </ul>
+    <p>This site aims to make that easier. It gives each proposal its own page, bringing together the proposal details, the associated drawing and a link to the online feedback form, so that residents can explore the proposals that matter to them without searching through multiple files. The proposals can also be found on a map on the <a href="index.html">homepage</a>.</p>
+    <p>The aim is to improve transparency and encourage more residents to take part, whether they support a proposal, object to it, or have other comments.</p>
+    <h2>Important</h2>
+    <p>This is an unofficial site and is not affiliated with Surrey County Council or Runnymede Borough Council. The official information is on the <a href="{OFFICIAL_URL}">Surrey County Council website</a>, and it takes precedence over anything shown here. Please check it before submitting feedback. The closing date for the advertising period is Friday 27 November.</p>
+    <p><a href="{FORM_URL}">Go to the online feedback form</a></p>"""
+    (ROOT / "why-this-site.html").write_text(
+        page_shell("Why this site exists", why_content), encoding="utf-8"
+    )
+
     (ROOT / "index.html").write_text(
         page_shell(
-            "Runnymede Parking Review 2026",
+            "Runnymede Parking Review 2026 (Unofficial site)",
             index_content,
             head_extra=MAP_HEAD,
             body_extra=MAP_SCRIPT.replace("__DATA__", proposals_geojson().replace("</", "<\\/")),
@@ -776,6 +809,7 @@ def build():
     <section class="panel" aria-labelledby="details-heading">
       <h2 id="details-heading">Proposal details</h2>
       {details}
+      <p><a href="#feedback-heading">Have your say</a></p>
     </section>
     <section aria-labelledby="maps-heading">
       <h2 id="maps-heading">Associated map or diagram</h2>
