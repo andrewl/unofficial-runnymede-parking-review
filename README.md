@@ -1,22 +1,21 @@
-The Runnymede Parking review can be found on this page https://www.surreycc.gov.uk/roads-and-transport/parking/reviews/runnymede/runnymede-parking-review-2026
+# Runnymede Parking Review 2026 (Unofficial site)
 
-There are a number of proposals, all listed in the pdf "The Statement of Reasons" on that page 
-https://www.surreycc.gov.uk/__data/assets/pdf_file/0004/539329/Runnymede-parking-review-2026.-Statement-of-Reasons.pdf
+Surrey County Council is proposing a number of new parking controls and restrictions across Runnymede. This site lets residents explore each proposal and find out how to comment on it. It is not affiliated with Surrey County Council and uses only publicly available information from the [Surrey County Council website](https://www.surreycc.gov.uk/roads-and-transport/parking/reviews/runnymede/runnymede-parking-review-2026).
 
-There are maps, one for each proposal in the additional pdf files attached to the main web page.
+**Site: <https://andrewl.github.io/unofficial-runnymede-parking-review/>**
 
-Create a set of static html pages:
+## Why this site exists
 
-One intro page which contains links to
+This site was built by a local resident after seeing a generic notice about parking changes on a lamp post nearby. The notice explained that changes were proposed "at or close to this location", and pointed to a website, with a QR code, for more information.
 
-Each area page (eg Addlestone, Chertsey, Egham etc) which contains links to
+![Photograph of the Surrey Highways notice on a lamp post](assets/images/notice.png)
 
-Each proposal, which should contain the proposal details, the associated map/diagram and a link to the online feedback form at https://runnymedeparkingreview2026.commonplace.is/ 
+Finding out what was actually proposed for my street took some digging:
 
-Please also add the following text to the bottom of each of the proposal pages
+- the written proposal was inside one large PDF, the Statement of Reasons, covering the whole borough;
+- the map or drawing for each proposal was in a different PDF, and there were several of these for each area;
+- the link to comment was on a separate website altogether.
 
-"There is now an opportunity for you to have your say about any of the proposed new parking restrictions. Whether it is an objection, an expression of support or any other comment, please let us know what you think by filling in the online feedback form.  Alternatively, if you prefer, you can send a letter with your comments to Runnymede 2026 Parking Review, Traffic Enforcement and Parking Team, Hazel House, Merrow Lane, Guildford GU4 7BQ.
+This site aims to make that easier. It gives each proposal its own page, bringing together the proposal details, the associated drawing and a link to the online feedback form, so that residents can explore the proposals that matter to them without searching through multiple files. The proposals can also be found on a map on the homepage.
 
-Please note that the closing date for the advertising period is Friday 27 November, so please make sure we have heard from you by then.
-
-After the advertising period has ended, all the feedback received will be compiled into a report and distributed to the Parking and Traffic Enforcement Manager and county councillors."
+The aim is to improve transparency and encourage more residents to take part, whether they support a proposal, object to it, or have other comments.
