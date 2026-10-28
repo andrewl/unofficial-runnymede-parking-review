@@ -13,6 +13,7 @@ OFFICIAL_URL = (
     "https://www.surreycc.gov.uk/roads-and-transport/parking/reviews/runnymede/"
     "runnymede-parking-review-2026"
 )
+REPO_URL = "https://github.com/andrewl/unofficial-runnymede-parking-review"
 STATEMENT_URL = (
     "https://www.surreycc.gov.uk/__data/assets/pdf_file/0004/539329/"
     "Runnymede-parking-review-2026.-Statement-of-Reasons.pdf"
@@ -665,7 +666,7 @@ def page_shell(title, content, depth=0, head_extra="", body_extra=""):
       <p>These pages are not in any way affiliated with Surrey County Council or Runnymede Borough Council. They use publicly available information from the Surrey County Council website, which is the authoritative source on this matter.</p>
       <p><strong>Before submitting any feedback, please check the official Surrey County Council website to confirm the details of the proposals, as the official information takes precedence over anything shown here.</strong></p>
       <p><a href="{OFFICIAL_URL}">Runnymede parking review 2026 on the Surrey County Council website</a></p>
-      <p><a href="{prefix}why-this-site.html">Why this site exists</a></p>
+      <p><a href="{prefix}why-this-site.html">Why this site exists</a> · <a href="{REPO_URL}">Source code on GitHub</a> · <a href="mailto:parking@andrewl.net">Queries and comments about this site</a></p>
       <p>Errors and omissions excepted (E&amp;OE). Every effort has been made to reproduce the published information accurately, but no guarantee is given that it is complete, correct or up to date.</p>
     </aside>
   </main>
